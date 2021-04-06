@@ -37,8 +37,27 @@ void QuadricDecimationMesh::Initialize() {
 void QuadricDecimationMesh::computeCollapse(EdgeCollapse* collapse) {
     // Compute collapse->position and collapse->cost here
     // based on the quadrics at the edge endpoints
+    size_t v1 = e(collapse->halfEdge).vert;
+    size_t v2 = e(e(collapse->halfEdge).pair).vert;
 
-    std::cerr << "computeCollapse in QuadricDecimationMesh not implemented.\n";
+    glm::mat4 Q1 = createQuadricForVert(v1);
+    glm::mat4 Q2 = createQuadricForVert(v2);
+    glm::mat4 Q = Q1 + Q2;
+    glm::mat4 Q_temp = Q;
+
+    Q[3][0] = 0.0f;
+    Q[3][1] = 0.0f;
+    Q[3][2] = 0.0f;
+    Q[3][3] = 1.0f;
+
+    if (glm::determinant(Q) == 0) {
+        glm::vec4 v = glm::inverse(Q) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        collapse->position = v;
+        collapse->cost = glm::dot(v, (Q_temp * v));
+    } else {
+        collapse->position = (mVerts[v1].pos + mVerts[v2].pos) / 2.0f;
+        collapse->cost = glm::length(collapse->position - mVerts[v1].pos);
+    }
 }
 
 /*! After each edge collapse the vertex properties need to be updated */
@@ -56,6 +75,12 @@ glm::mat4 QuadricDecimationMesh::createQuadricForVert(size_t indx) const {
 
     // The quadric for a vertex is the sum of all the quadrics for the adjacent
     // faces Tip: Matrix4x4 has an operator +=
+    std::vector<size_t> allFaces = FindNeighborFaces(indx);
+
+    for (auto face : allFaces) {
+        Q += createQuadricForFace(face);
+    }
+
     return Q;
 }
 
@@ -66,7 +91,22 @@ glm::mat4 QuadricDecimationMesh::createQuadricForFace(size_t indx) const {
 
     // Calculate the quadric (outer product of plane parameters) for a face
     // here using the formula from Garland and Heckbert
-    return glm::mat4();
+    float a, b, c, d;
+
+    const glm::vec3 normal = glm::normalize(f(indx).normal);
+    const glm::vec3 vertex = v(e(f(indx).edge).vert).pos;
+
+    d = -1.0f * glm::dot(normal, vertex);
+    a = normal[0];
+    b = normal[1];
+    c = normal[2];
+
+    glm::mat4 Kp = {{a * a, a * b, a * c, a * d},
+                     {a * b, b * b, b * c, b * d},
+                     {a * c, b * c, c * c, c * d},
+                     {a * d, b * d, c * d, d * d}};
+
+    return Kp;
 }
 
 void QuadricDecimationMesh::Render() {
