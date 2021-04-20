@@ -384,8 +384,7 @@ void HalfEdgeMesh::Update() {
             if (maxCurvature < (*iter).curvature) maxCurvature = (*iter).curvature;
             iter++;
         }
-        std::cerr << "Mapping color based on vertex curvature with range [" << minCurvature << ","
-                  << maxCurvature << "]" << std::endl;
+
         iter = mVerts.begin();
         while (iter != iend) {
             if (mColorMap != nullptr)
@@ -442,7 +441,6 @@ float HalfEdgeMesh::Volume() const {
         float area = glm::length(glm::cross(vec1, vec2)) * 0.5f;
         volume += glm::dot(((v1 + v2 + v3) / glm::vec3(3.0f, 3.0f, 3.0f)), face.normal * area) / 3.0f;
     }
-    std::cerr << "Volume calculation not implemented for half-edge mesh!\n";
     return volume;
 }
 

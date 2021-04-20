@@ -45,12 +45,14 @@ void QuadricDecimationMesh::computeCollapse(EdgeCollapse* collapse) {
     glm::mat4 Q = Q1 + Q2;
     glm::mat4 Q_temp = Q;
 
-    Q[3][0] = 0.0f;
-    Q[3][1] = 0.0f;
-    Q[3][2] = 0.0f;
+    Q[0][3] = 0.0f;
+    Q[1][3] = 0.0f;
+    Q[2][3] = 0.0f;
     Q[3][3] = 1.0f;
 
-    if (glm::determinant(Q) == 0) {
+    const float EPSILON = 0.000015;
+
+    if (glm::abs(glm::determinant(Q)) > EPSILON) {
         glm::vec4 v = glm::inverse(Q) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         collapse->position = v;
         collapse->cost = glm::dot(v, (Q_temp * v));
