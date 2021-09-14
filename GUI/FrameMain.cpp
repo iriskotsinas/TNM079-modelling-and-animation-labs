@@ -704,7 +704,10 @@ void FrameMain::AddObjectImplicitMesh(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricPlane(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{0.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, 1.0f},
+                {0.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.5f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
@@ -718,7 +721,10 @@ void FrameMain::AddObjectQuadricPlane(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricCylinder(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{1.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, -1.0f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
@@ -732,7 +738,10 @@ void FrameMain::AddObjectQuadricCylinder(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricEllipsoid(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{2.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, 1.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, -1.0f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
@@ -746,7 +755,10 @@ void FrameMain::AddObjectQuadricEllipsoid(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricCone(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{1.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, -1.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, 0.0f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
@@ -760,7 +772,10 @@ void FrameMain::AddObjectQuadricCone(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricParaboloid(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{1.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, -0.5f},
+                {0.0f, 0.0f, -0.5f, 0.0f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
@@ -774,7 +789,10 @@ void FrameMain::AddObjectQuadricParaboloid(wxCommandEvent &event) {
 }
 
 void FrameMain::AddObjectQuadricHyperboloid(wxCommandEvent &event) {
-    glm::mat4 M{1.0f};
+    glm::mat4 M{{1.0f, 0.0f, 0.0f, 0.0f},
+                {0.0f, 1.0f, 0.0f, 0.0f},
+                {0.0f, 0.0f, -1.0f, 0.0f},
+                {0.0f, 0.0f, 0.0f, 1.0f}};
     // Construct the quadric matrix here
 
     Quadric *Q = new Quadric(M);
